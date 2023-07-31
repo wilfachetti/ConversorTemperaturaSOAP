@@ -6,6 +6,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="big_digite_valor"><big>Digite um valor para conversão!</big></string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -43,4 +44,15 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="w3schools">w3schools</string>
+    <string name="http_www_w3schools_com_xml">http://www.w3schools.com/xml/</string>
+    <string name="entre_com_a_temperatura">Entre com a temperatura</string>
+    <string name="celsius_para_fahrenheit">Celsius para Fahrenheit</string>
+    <string name="fahrenheit_para_celsius">Fahrenheit para Celsius</string>
+    <string name="converter">Converter</string>
+    <string name="verifique_a_conexao">Verifique a conexão.</string>
+    <string name="digite_um_valor_para_conversao">Digite um valor para conversão!</string>
+    <string name="logo_w3schools">Logo W3Schools</string>
+    <string name="verifique_sua_rede">Verifique sua rede</string>
+    <string name="erro_compatibilidade_android">Sua versão do Android não é compatível</string>
 </resources>

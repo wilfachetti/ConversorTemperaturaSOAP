@@ -11,7 +11,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.net.Proxy;
 
-public class TemperaturaDAO {
+public class DaoTemperature {
 
     private static final String NAMESPACE = "https://www.w3schools.com/xml/";
     private static final String URL = "https://www.w3schools.com/xml/tempconvert.asmx?WSDL";
@@ -26,86 +26,66 @@ public class TemperaturaDAO {
     private String result;
     private static final int TIMEOUT = 10000;
 
-    public TemperaturaDAO(){
-
+    public DaoTemperature(){
         result = null;
 
         // Cria envelope para SOAP
-        envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
         envelope.dotNet = true;
 
         // Define o objeto que efetuará o transporte. Aqui também é definido o timeout.
         http = new HttpTransportSE(Proxy.NO_PROXY, URL, TIMEOUT);
-
     }
 
-    private void finalizaConexao(){
-
+    private void endConnection(){
         request = null;
         envelope = null;
         http = null;
-
     }
 
     @SuppressLint("DefaultLocale")
-    public String converteCparaF(String grausC) {
-
+    public String convertCtoF(String degreesC) {
         // Cria a requisição SOAP, para consumir o webService.
         request = new SoapObject(NAMESPACE, METHOD_NAME1);
-
         // Acrescenta o parâmetro ao argumento do webService.
-        request.addProperty("Celsius", grausC);
-
+        request.addProperty("Celsius", degreesC);
         // Insere a requisição montada no envelope.
         envelope.setOutputSoapObject(request);
 
-        String parcial;
-
+        String partial;
         try {
             // Solicita uma chamada, envia o envelope no endereço
             http.call(SOAP_ACTION1, envelope);
-            parcial = envelope.getResponse().toString();
+            partial = envelope.getResponse().toString();
 
-            result = String.format("%.2f ºF", Float.valueOf(parcial));
-
+            result = String.format("%.2f ºF", Float.valueOf(partial));
         } catch (IOException | XmlPullParserException e) {
-
-            result = "Verifique a conexão.";
+            //result = "Connection error.";
             e.printStackTrace();
         }
-
-        finalizaConexao();
+        endConnection();
 
         return result;
     }
 
     @SuppressLint("DefaultLocale")
-    public String converteFparaC(String grausF){
-
-        // Cria a requisição SOAP, para consumir o webService.
+    public String convertFtoC(String degreesF){
         request = new SoapObject(NAMESPACE, METHOD_NAME2);
-
-        // Acrescenta o parâmetro ao argumento do webService.
-        request.addProperty("Fahrenheit", grausF);
-
-        // Insere a requisição montada no envelope.
+        request.addProperty("Fahrenheit", degreesF);
         envelope.setOutputSoapObject(request);
 
-        String parcial;
-
+        String partial;
         try {
             http.call(SOAP_ACTION2, envelope);
-            parcial = envelope.getResponse().toString();
+            partial = envelope.getResponse().toString();
 
-            result = String.format("%.2f ºC", Float.valueOf(parcial));
+            result = String.format("%.2f ºC", Float.valueOf(partial));
 
         } catch (IOException | XmlPullParserException e) {
-
-            result = "Verifique a conexão.";
+            //result = "Connection Error.";
             e.printStackTrace();
         }
-
-        finalizaConexao();
+        endConnection();
 
         return result;
     }

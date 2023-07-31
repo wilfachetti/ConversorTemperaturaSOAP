@@ -1,9 +1,11 @@
 package br.com.lievo.conversortemperatura;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -13,24 +15,16 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import br.com.lievo.conversortemperatura.dao.DaoTemperature;
 
-import br.com.lievo.conversortemperatura.dao.TemperaturaDAO;
-import br.com.lievo.conversortemperatura.databinding.ActivityMainBinding;
-
-
-
-public class MainActivity extends AppCompatActivity {
-
-    private ActivityMainBinding binding;
-
-
-    private EditText temperaturaInicial;
-    private TextView temperaturaFinal;
-    private RadioButton radioTipoConversao;
+public class MainActivity extends Activity {
+    private EditText initialTemperature;
+    private TextView finalTemperature;
+    private RadioButton radioTypeConversion;
     private ProgressBar progressBar;
-    protected AlphaAnimation fadeIn = new AlphaAnimation(0.0f , 1.0f ) ;
-    protected AlphaAnimation fadeOut = new AlphaAnimation( 1.0f , 0.0f ) ;
+    protected AlphaAnimation fadeIn ;
+    protected AlphaAnimation fadeOut;
+    private String finalTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,98 +32,115 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        temperaturaInicial = findViewById(R.id.etTemperaturaConvertTempAct);
-        temperaturaFinal = findViewById(R.id.tvTemperaturaConvertTempAct);
-        radioTipoConversao = findViewById(R.id.rbCtoFConvertTempAct);
+        initializeVariables();
+    }
+
+    public void initializeVariables() {
+        initialTemperature = findViewById(R.id.etInitialTemperature);
+        finalTemperature = findViewById(R.id.tvFinalTemperature);
+        radioTypeConversion = findViewById(R.id.rbCtoFConvert);
         progressBar = findViewById(R.id.progressBar);
 
-        fadeIn.setDuration(500);
-        fadeIn.setStartOffset(500);
+        putConversionAnimationSettings();
+    }
+
+    public void putConversionAnimationSettings() {
+        fadeIn = new AlphaAnimation(0f, 1f);
+        fadeOut = new AlphaAnimation(1f, 0f);
+
+        fadeIn.setDuration(1000);
+        //fadeIn.setStartOffset(500);
+        fadeIn.setFillAfter(true);
+
         fadeOut.setDuration(1000);
-        fadeOut.setStartOffset(4000);
-        fadeOut.setFillAfter(false);
-
+        //fadeOut.setStartOffset(500);
+        fadeOut.setFillAfter(true);
     }
 
-    private void verificaErroConexao(){
-        String temperatura = temperaturaFinal.getText().toString();
+    public void animationForBegin() {
+        finalTemperature.setAnimation(fadeOut);
+        finalTemperature.startAnimation(fadeOut);
+        finalTemperature.setAlpha(0f);
+        finalTemperature.setVisibility(View.GONE);
+        finalTemperature.setText("");
 
-        if ((temperatura.indexOf("V") == 0) || (temperatura.indexOf("E") == 0))
-            temperaturaFinal.setTextSize(32);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setAnimation(fadeIn);
+        progressBar.startAnimation(fadeIn);
+        progressBar.setAlpha(1f);
     }
 
-    private void converteTemperatura(){
-        TemperaturaDAO dao = new TemperaturaDAO();
-        String tempIni = temperaturaInicial.getText().toString();
-        String tempFim = "";
+    public void animationForEnd() {
+        progressBar.setAnimation(fadeOut);
+        progressBar.startAnimation(fadeOut);
+        progressBar.setAlpha(0f);
+        progressBar.setVisibility(View.GONE);
 
-        try {
-            if (radioTipoConversao.isChecked())
-                tempFim = dao.converteCparaF(tempIni);
-            else
-                tempFim = dao.converteFparaC(tempIni);
-
-            temperaturaFinal.setText(tempFim.toString());
-
-            Toast toast = Toast.makeText(getApplicationContext(), tempFim.toString(), Toast.LENGTH_SHORT);
-            toast.show();
-
-        }catch (RuntimeException e){
-            verificaErroConexao();
-        }finally {
-            verificaErroConexao();
-        }
-
-        temperaturaFinal.setText(tempFim);
+        finalTemperature.setText(finalTemp);
+        finalTemperature.setVisibility(View.VISIBLE);
+        finalTemperature.setAnimation(fadeIn);
+        finalTemperature.startAnimation(fadeIn);
+        finalTemperature.setAlpha(1f);
     }
 
-    public boolean verificaConexaoInternet() {
-        ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if ((conectivtyManager.getActiveNetworkInfo() != null) && (conectivtyManager.getActiveNetworkInfo().isAvailable()) && (conectivtyManager.getActiveNetworkInfo().isConnected()))
-            return true;
-        else
-            return false;
+    public void setMessageErrorConnection(String message) {
+        finalTemperature.setText(message);
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class Task extends AsyncTask<Void, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            temperaturaFinal.setTextSize(44);
-
-            progressBar.startAnimation(fadeIn);
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            converteTemperatura();
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String retorno) {
-            progressBar.startAnimation(fadeOut);
-            progressBar.setVisibility(View.GONE);
-        }
+    public void toastFillTemperature() {
+        //Toast toast = Toast.makeText(getApplicationContext(), R.string.digite_um_valor_para_conversao, Toast.LENGTH_SHORT);
+        Toast.makeText(getApplicationContext(), R.string.big_digite_valor, Toast.LENGTH_SHORT).show();
+        //toast.show();
     }
-    public void onClickBtConvertActConvertTemp(View view) {
-        temperaturaFinal.setAnimation(fadeOut);
-        temperaturaFinal.setText("");
 
-        if(verificaConexaoInternet()) {
-            if(!(temperaturaInicial.getText().toString().equals(""))) {
-                new Task().execute();
-            }else{
-                Toast toast = Toast.makeText(getApplicationContext(), "Digite um valor para conversão!", Toast.LENGTH_SHORT);
-                toast.show();
+    private Boolean checkInternetConnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Network nw = connectivityManager.getActiveNetwork();
+            if (nw == null) {
+                setMessageErrorConnection(getString(R.string.verifique_sua_rede));
+                return false;
             }
-        }else {
-            temperaturaFinal.setText("Verifique a conexão.");
-            verificaErroConexao();
+            NetworkCapabilities actNw = connectivityManager.getNetworkCapabilities(nw);
+            return actNw != null && (actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) || actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH));
+        } else {
+            setMessageErrorConnection(getString(R.string.erro_compatibilidade_android));
+            return false;
         }
-        temperaturaFinal.setAnimation(fadeIn);
+    }
 
+    private void convertTemperature(){
+        DaoTemperature daoTemperature = new DaoTemperature();
+        String tempIni = initialTemperature.getText().toString();
+
+        if (radioTypeConversion.isChecked())
+            finalTemp = daoTemperature.convertCtoF(tempIni);
+        else
+            finalTemp = daoTemperature.convertFtoC(tempIni);
+    }
+
+    public void onClickBtConvertTemp(View view) {
+        if(checkInternetConnection()) {
+            if(!(initialTemperature.getText().toString().equals(""))) {
+                animationForBegin();
+
+                new BackgroundTask(MainActivity.this) {
+                    @Override
+                    public void doInBackground() {
+                        convertTemperature();
+                    }
+
+                    @Override
+                    public void onPostExecute() {
+                        animationForEnd();
+                    }
+                }.execute();
+
+            }else{
+                toastFillTemperature();
+            }
+        }else
+            setMessageErrorConnection(getString(R.string.verifique_sua_rede));
     }
 }

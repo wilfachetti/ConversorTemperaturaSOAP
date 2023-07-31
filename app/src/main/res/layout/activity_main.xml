@@ -1,122 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_marginRight="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/w3s_icon"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/logo_w3schools" />
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/w3schools"
+        android:contentDescription="@string/logo_w3schools" />
+
+    <TextView
+        android:id="@+id/tvUrlXml"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="1"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints">
+        android:text="@string/http_www_w3schools_com_xml"
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"
+        android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/etInitialTemperature"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="31dp"
+        android:hint="@string/entre_com_a_temperatura"
+        android:importantForAutofill="no"
+        android:inputType="number|numberDecimal|numberSigned"
+        android:minHeight="48dp"
+        android:textAlignment="center"
+        android:textColorHint="#0c8156"
+        android:textSize="24sp" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp">
+
+        <RadioButton
+            android:id="@+id/rbCtoFConvert"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:checked="true"
+            android:text="@string/celsius_para_fahrenheit"
             android:textSize="24sp" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/rbFtoCConvert"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/w3" />
-
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="http://www.w3schools.com/xml/"
-            android:textAlignment="center"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:text="@string/fahrenheit_para_celsius"
             android:textSize="24sp" />
 
-        <EditText
-            android:id="@+id/etTemperaturaConvertTempAct"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Entre com a temperatura"
-            android:inputType="number|numberDecimal|numberSigned"
-            android:textAlignment="center"
-            android:textSize="24sp" />
+    </RadioGroup>
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:textAlignment="center"
-            android:textSize="24sp" />
+    <Button
+        android:id="@+id/btConvertTemp"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="31dp"
+        android:backgroundTint="#04aa6d"
+        android:onClick="onClickBtConvertTemp"
+        android:text="@string/converter"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        tools:ignore="UsingOnClickInXml" />
 
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <include
+        layout="@layout/progress_textview"
+        android:layout_marginTop="31dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-            <RadioButton
-                android:id="@+id/rbCtoFConvertTempAct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:checked="true"
-                android:text="Celsius para Fahrenheit"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="12sp" />
-
-            <RadioButton
-                android:id="@+id/rbFtoCConvertTempAct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Fahrenheit para Celsius"
-                android:textSize="24sp" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/btConverterConvertTempAct"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickBtConvertActConvertTemp"
-            android:text="Converter"
-            tools:ignore="UsingOnClickInXml" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="24sp" />
-
-       <include layout="@layout/progress_textview"/>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
