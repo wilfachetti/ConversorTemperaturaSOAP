@@ -23,12 +23,12 @@ public class TemperaturaDAO {
     private HttpTransportSE http;
     private SoapObject request;
     private SoapSerializationEnvelope envelope;
-    private String resultado;
+    private String result;
     private static final int TIMEOUT = 10000;
 
     public TemperaturaDAO(){
 
-        resultado = null;
+        result = null;
 
         // Cria envelope para SOAP
         envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -66,17 +66,17 @@ public class TemperaturaDAO {
             http.call(SOAP_ACTION1, envelope);
             parcial = envelope.getResponse().toString();
 
-            resultado = String.format("%.2f ºF", Float.valueOf(parcial));
+            result = String.format("%.2f ºF", Float.valueOf(parcial));
 
         } catch (IOException | XmlPullParserException e) {
 
-            resultado = "Verifique a conexão.";
+            result = "Verifique a conexão.";
             e.printStackTrace();
         }
 
         finalizaConexao();
 
-        return resultado;
+        return result;
     }
 
     @SuppressLint("DefaultLocale")
@@ -97,16 +97,16 @@ public class TemperaturaDAO {
             http.call(SOAP_ACTION2, envelope);
             parcial = envelope.getResponse().toString();
 
-            resultado = String.format("%.2f ºC", Float.valueOf(parcial));
+            result = String.format("%.2f ºC", Float.valueOf(parcial));
 
         } catch (IOException | XmlPullParserException e) {
 
-            resultado = "Verifique a conexão.";
+            result = "Verifique a conexão.";
             e.printStackTrace();
         }
 
         finalizaConexao();
 
-        return resultado;
+        return result;
     }
 }
