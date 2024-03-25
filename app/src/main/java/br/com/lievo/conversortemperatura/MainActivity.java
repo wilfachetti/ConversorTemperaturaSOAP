@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
     private TextView finalTemperature;
     private RadioButton radioTypeConversion;
     private ProgressBar progressBar;
-    protected AlphaAnimation fadeIn ;
+    protected AlphaAnimation fadeIn;
     protected AlphaAnimation fadeOut;
     private String finalTemp;
 
@@ -41,10 +41,10 @@ public class MainActivity extends Activity {
         radioTypeConversion = findViewById(R.id.rbCtoFConvert);
         progressBar = findViewById(R.id.progressBar);
 
-        putConversionAnimationSettings();
+        putSettingsAnimationConversion();
     }
 
-    public void putConversionAnimationSettings() {
+    public void putSettingsAnimationConversion() {
         fadeIn = new AlphaAnimation(0f, 1f);
         fadeOut = new AlphaAnimation(1f, 0f);
 
