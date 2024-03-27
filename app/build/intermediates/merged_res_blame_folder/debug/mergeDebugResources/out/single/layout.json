@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "br.com.lievo.conversortemperatura.app-mergeDebugResources-27:/layout/activity_main.xml",
+        "source": "br.com.lievo.conversortemperatura.app-main-30:/layout/activity_main.xml"
+    },
+    {
+        "merged": "br.com.lievo.conversortemperatura.app-mergeDebugResources-27:/layout/progress_textview.xml",
+        "source": "br.com.lievo.conversortemperatura.app-main-30:/layout/progress_textview.xml"
+    }
+]
