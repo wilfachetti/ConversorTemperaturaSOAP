@@ -19,3 +19,41 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class * {
+    * (...);
+}
+
+-keep class * {
+    public void (...);
+    public * *(...);
+}
+
+-keep class * {
+    public *;
+}
+
+-keepclassmembers class * {
+    public static final int *;
+}
+
+-keep class * {
+    public static void main(...);
+}
+
+-keep class * {
+    public String toString();
+}
+
+-keep public class * extends android.content.res.Resources {
+    public static final int *;
+}
+
+
+-dontwarn org.xmlpull.v1.**
+-dontwarn org.kxml2.io.**
+-dontwarn android.content.res.**
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+
+-keep class org.xmlpull.** { *; }
+-keepclassmembers class org.xmlpull.** { *; }
