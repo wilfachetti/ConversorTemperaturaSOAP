@@ -11,16 +11,12 @@
 /.idea/deploymentTargetDropDown.xml
 /.idea/migrations.xml
 
-
-
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties
 /shelf/
 /workspace.xml
 /app/build/
 /app/release/
-/app/libs
